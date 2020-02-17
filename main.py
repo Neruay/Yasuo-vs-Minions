@@ -1,9 +1,13 @@
 from random import seed
 from random import randint
-import pygame, sys, time, math
-from pygame.locals import * 
+import pygame
+import sys
+import time
+import math
+from pygame.locals import *
 
 seed(time)
+
 
 def DrawText(text, font, surface_menu, x, y, selected=False):
     textobj = font.render(text, 1, font_color)
@@ -27,16 +31,17 @@ MOVESPEED = 5
 WHITE = (255, 255, 255),
 GRAY = (51, 51, 51),
 RED = (255, 0, 0)
-GREEN = (0, 255, 0) 
-BLUE = (0, 0, 255) 
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
-CYAN = (0,255,255)
-MAGENTA = (255,0,255)
-AZURE = (240,255,255)
-OLIVE = (128,128,0)
+CYAN = (0, 255, 255)
+MAGENTA = (255, 0, 255)
+AZURE = (240, 255, 255)
+OLIVE = (128, 128, 0)
 
 CIRCLERADIUS = 100
 QUANTITY = 10
+
 
 class Circle(object):
     def __init__(self, x, y, radius, color, duration, direction, dx, dy):
@@ -52,11 +57,13 @@ class Circle(object):
     def intersects(self, circle):
         return (self.x - circle.x)**2 + (self.y - circle.y)**2 < (self.radius + circle.radius)**2
 
+
 def generate_circle_random_pos():
     colors = [RED, GREEN, BLUE, CYAN, MAGENTA, AZURE, OLIVE]
     x = randint(CIRCLERADIUS, WINDOWWIDTH-CIRCLERADIUS)
     y = randint(CIRCLERADIUS, WINDOWHEIGHT-CIRCLERADIUS)
     return Circle(x, y, CIRCLERADIUS, colors[randint(0, len(colors)-1)], 0, 0, 0, 0)
+
 
 def generate_circles(num_circles):
     circles = []
@@ -71,6 +78,7 @@ def generate_circles(num_circles):
             circles.append(new_circle)
     return circles
 
+
 circles = generate_circles(QUANTITY)
 
 MOVESPEED = 5
@@ -82,7 +90,7 @@ lastposx = 0
 lastposy = 0
 
 while True:
-    for event in pygame.event.get(): 
+    for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -90,11 +98,11 @@ while True:
     windowSurface.fill(GRAY)
 
     DrawText('Start', font, windowSurface, (WINDOWWIDTH/2) -
-         100, (WINDOWHEIGHT/2)-110, True)
+             100, (WINDOWHEIGHT/2)-110, True)
     DrawText('Options', font, windowSurface,
-         (WINDOWWIDTH/2)-100, (WINDOWHEIGHT/2)-40)
+             (WINDOWWIDTH/2)-100, (WINDOWHEIGHT/2)-40)
     DrawText('Quit', font, windowSurface,
-         (WINDOWWIDTH/2)-100, (WINDOWHEIGHT/2)+30)
+             (WINDOWWIDTH/2)-100, (WINDOWHEIGHT/2)+30)
 
     for c in circles:
         if c.duration == 0:
@@ -115,7 +123,7 @@ while True:
         lastposy = c.y
         c.x += c.dx
         c.y += c.dy
-        c.duration -= 1  
-        pygame.draw.circle(windowSurface, c.color, (c.x,c.y), c.radius, 15)
+        c.duration -= 1
+        pygame.draw.circle(windowSurface, c.color, (c.x, c.y), c.radius, 15)
     pygame.display.update()
     fps.tick(60)
